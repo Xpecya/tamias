@@ -20,7 +20,7 @@ public final class ThreadUtil {
         public void sleep() {
             Executor.next();
             try {
-                Thread.sleep(Integer.MAX_VALUE);
+                Thread.sleep(Long.MAX_VALUE);
             } catch (InterruptedException ignored) {}
         }
 
