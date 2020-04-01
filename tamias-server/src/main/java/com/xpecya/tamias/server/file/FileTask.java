@@ -1,6 +1,6 @@
 package com.xpecya.tamias.server.file;
 
-import com.xpecya.tamias.core.thread.ThreadPool;
+import com.xpecya.tamias.core.thread.ThreadUtil;
 import com.xpecya.tamias.server.Cache;
 
 import java.io.FileInputStream;
@@ -23,13 +23,13 @@ public class FileTask {
         new Thread(() -> {
             while (true) {
                 try {
-                    Thread.sleep(1);
+                    Thread.sleep(10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 Runnable runnable;
                 while ((runnable = readTasks.remove()) != null) {
-                    ThreadPool.EXECUTOR.execute(runnable);
+                    ThreadUtil.Executor.execute(runnable);
                 }
             }
         }).start();

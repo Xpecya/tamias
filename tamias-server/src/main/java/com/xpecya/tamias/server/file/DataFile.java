@@ -1,7 +1,7 @@
 package com.xpecya.tamias.server.file;
 
 import com.xpecya.tamias.core.Logger;
-import com.xpecya.tamias.core.thread.ThreadPool;
+import com.xpecya.tamias.core.thread.ThreadUtil;
 import com.xpecya.tamias.server.Config;
 
 import java.io.*;
@@ -54,13 +54,13 @@ public enum DataFile {
         new Thread(() -> {
             while (true) {
                 try {
-                    Thread.sleep(1);
+                    Thread.sleep(10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 GetTask task;
                 while ((task = taskQueue.poll()) != null) {
-                    ThreadPool.EXECUTOR.execute(task);
+                    ThreadUtil.Executor.execute(task);
                 }
             }
         }).start();
@@ -79,10 +79,12 @@ public enum DataFile {
         return task.value;
     }
 
+    /** todo finish this function */
     public synchronized void set(int index, Data data) {
 
     }
 
+    /** todo finish this function */
     public synchronized void del(int index) {
 
     }

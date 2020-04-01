@@ -1,9 +1,10 @@
 package com.xpecya.tamias.server;
 
-import com.xpecya.tamias.core.thread.Lock;
+import com.xpecya.tamias.core.thread.ThreadUtil;
 
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.concurrent.locks.Lock;
 
 public final class Cache<T> {
 
@@ -31,7 +32,7 @@ public final class Cache<T> {
     }
 
     public void set(String key, String value) {
-        lock.waitForLock(() -> {
+        waitForLock(() -> {
             length ++;
             if (length == limit) {
                 doDel(head);
@@ -53,7 +54,7 @@ public final class Cache<T> {
     }
 
     public void del(String key) {
-        lock.waitForLock(() -> doDel(getNode(key)));
+        waitForLock(() -> doDel(getNode(key)));
     }
 
     private Node<T> getNode(String key) {
@@ -82,6 +83,24 @@ public final class Cache<T> {
         }
         map.remove(node.key);
         length --;
+    }
+
+    private void waitForLock(Runnable runnable) {
+        while(!lock.tryLock()) {
+            ThreadUtil.ThreadProxy currentThread = ThreadUtil.currentThread();
+            Thread interruptThread = new Thread(() -> {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                currentThread.interrupt();
+            });
+            interruptThread.start();
+            currentThread.sleep();
+        }
+        ThreadUtil.Executor.execute(runnable);
+        lock.unlock();
     }
 
     private static class Node<T> {
