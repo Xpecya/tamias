@@ -52,6 +52,8 @@ public final class ThreadUtil {
         private static void start(Runnable runnable) {
             Thread thread = new Thread(() -> {
                 runnable.run();
+                long id = Thread.currentThread().getId();
+                ThreadUtil.PROXY_MAP.remove(id);
                 next();
             });
             long id = thread.getId();
