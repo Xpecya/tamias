@@ -36,7 +36,7 @@ public class Request {
      * 如果发送请求不带这个参数，返回值将不带这个参数，此时最后一个INPUT_SEPARATOR可以省略
      * 反之，如果发送请求带这个数，则返回值会包含若干性能分析用指标
      */
-    private static final String FORMAT = "%s" + INPUT_SEPARATOR + "%s" + INPUT_SEPARATOR + "%s" + INPUT_SEPARATOR + "%d";
+    private static final String FORMAT = "%s" + INPUT_SEPARATOR + "%s" + INPUT_SEPARATOR + "%s" + INPUT_SEPARATOR + "%s";
 
     /**
      * 将输入值解析为Request对象
@@ -77,8 +77,8 @@ public class Request {
             stringBuilder.deleteCharAt(stringBuilder.lastIndexOf(VALUE_SEPARATOR));
             param = stringBuilder.toString();
         }
-        return String.format(FORMAT, transactionId == null ? "" : transactionId, command, param,
-                timeMills == 0 ? "" : timeMills);
+        return String.format(FORMAT, transactionId == null ? "" : transactionId,
+                command, param, timeMills == 0 ? "" : timeMills);
     }
 
     /**
