@@ -1,6 +1,6 @@
 package com.xpecya.tamias.server.command;
 
-import com.xpecya.tamias.server.Cache;
+import com.xpecya.tamias.core.Cache;
 import com.xpecya.tamias.server.file.FileTask;
 
 public enum GetHandler {

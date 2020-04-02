@@ -1,7 +1,7 @@
 package com.xpecya.tamias.server.file;
 
 import com.xpecya.tamias.core.thread.ThreadUtil;
-import com.xpecya.tamias.server.Cache;
+import com.xpecya.tamias.core.Cache;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
