@@ -1,8 +1,9 @@
 package com.xpecya.tamias.server.file;
 
 import com.xpecya.tamias.core.Logger;
-import com.xpecya.tamias.core.thread.ThreadUtil;
+import com.xpecya.tamias.core.util.ThreadUtil;
 import com.xpecya.tamias.server.Config;
+import com.xpecya.tamias.server.file.model.Data;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -60,13 +61,13 @@ public enum DataFile {
                 }
                 GetTask task;
                 while ((task = taskQueue.poll()) != null) {
-                    ThreadUtil.Executor.execute(task);
+                    ThreadUtil.GLOBAL_EXECUTOR.execute(task);
                 }
             }
         }).start();
     }
 
-    public String get(int index) {
+    public String get(long index) {
         GetTask task = new GetTask();
         task.index = index;
         task.latch = new CountDownLatch(1);
@@ -89,7 +90,7 @@ public enum DataFile {
 
     }
 
-    private String doGet(int index) throws IOException {
+    private String doGet(long index) throws IOException {
         if (index == CURRENT_DELETING_DATA) {
             return null;
         }
@@ -128,7 +129,7 @@ public enum DataFile {
     }
 
     private final class GetTask implements Runnable {
-        private int index;
+        private long index;
         private CountDownLatch latch;
         private String value;
 
